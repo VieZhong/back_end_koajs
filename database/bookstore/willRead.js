@@ -31,16 +31,16 @@
 }, {
     "id": "7",
     "name": "天才在左 疯子在右",
-    "author": "古龙",
-    "country": "中国台湾"
+    "author": "高铭",
+    "country": "中国"
 }, {
     "id": "8",
     "name": "质数的孤独",
-    "author": "古龙",
-    "country": "中国台湾"
+    "author": "保罗·乔尔达诺",
+    "country": "意大利"
 }, {
     "id": "9",
     "name": "黑客与画家",
-    "author": "古龙",
-    "country": "中国台湾"
+    "author": "保罗·格雷厄姆",
+    "country": "美国"
 }]
