@@ -11,6 +11,15 @@ app.use(logger());
 
 app.use(staticServe('./apps/'));
 
+app.use(route.post('/api/login', function* () {
+    let user = yield parse.form(this);
+    if(user.account == 'xiaofu' && user.password == '584662') {
+        this.response.status = 200;
+    }else {
+        this.response.status = 400;
+    }
+}));
+
 app.use(route.get('/api/bookstore/books/:db', function* (db) {
     if(!['hasRead', 'willRead'].includes(db)){
         this.response.body = '请求方法不存在！';
