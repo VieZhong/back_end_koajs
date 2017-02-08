@@ -21,6 +21,7 @@ app.use(route.post('/api/login', function* () {
         this.session.authed = true;
         this.response.status = 200;
         this.response.body = {'account': user.account, 'name': 'VieZhong'};
+        this.cookies.set('login', 1, {'httpOnly': false});
     }else {
         this.response.status = 400;
     }
@@ -29,6 +30,7 @@ app.use(route.post('/api/login', function* () {
 app.use(route.post('/api/logout', function* () {
     this.session.authed = false;
     this.response.status = 200;
+    this.cookies.set('login', 0, {'httpOnly': false});
 }));
 
 app.use(route.get('/api/users/me', function* () {
