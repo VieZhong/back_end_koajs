@@ -13,14 +13,26 @@ const bookstoreRouter = require('./bookstoreRouter.js');
 app.keys = ['koajs'];
 
 app
+    .use((ctx, next) => {
+        if(ctx.path === '/bookstore') {
+            ctx.redirect('/bookstore/index.html');
+            ctx.status = 301;
+        }
+        return next();
+    })
     .use(logger())
-    .use(session({ key: 'koa:sess', maxAge: 86400000 }, app))
-    .use(bodyParser({extendTypes: {
-        form: ['text/plain']
-    }}))
+    .use(session({
+        key: 'koa:sess',
+        maxAge: 86400000
+    }, app))
+    .use(bodyParser({
+        extendTypes: {
+            form: ['text/plain']
+        }
+    }))
     .use(userRouter)
     .use(bookstoreRouter)
     .use(serve('./apps/bookstore', '/bookstore'));
 
 
-app.listen(80);
+app.listen(8080);
