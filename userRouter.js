@@ -19,7 +19,6 @@ const router = createRouter({
     POST: {
         '/api/login': (ctx, next) => {
             const user = ctx.request.body;
-            console.log(user);
             if(user.account == 'xiaofu' && user.password == '584662') {
                 ctx.session.authed = true;
                 ctx.status = 200;
