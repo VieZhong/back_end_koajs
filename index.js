@@ -15,8 +15,13 @@ app.keys = ['koajs'];
 app
     .use((ctx, next) => {
         if(ctx.path === '/bookstore') {
-            ctx.redirect('/bookstore/index.html');
             ctx.status = 301;
+            ctx.redirect('/bookstore/index.html');
+            return;
+        } else if(ctx.path === '/blog') {
+            ctx.status = 301;
+            ctx.redirect('http://viezhong.github.io/blog');
+            return;
         }
         return next();
     })
