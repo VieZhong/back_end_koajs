@@ -14,11 +14,15 @@ app.keys = ['koajs'];
 
 app
     .use((ctx, next) => {
-        if(ctx.path === '/bookstore') {
+        if (ctx.path === '/') {
+            ctx.status = 301;
+            ctx.redirect('/index.html');
+            return;
+        } else if (ctx.path === '/bookstore') {
             ctx.status = 301;
             ctx.redirect('/bookstore/index.html');
             return;
-        } else if(ctx.path === '/blog') {
+        } else if (ctx.path === '/blog') {
             ctx.status = 301;
             ctx.redirect('http://viezhong.github.io/blog');
             return;
@@ -37,7 +41,7 @@ app
     }))
     .use(userRouter)
     .use(bookstoreRouter)
-    .use(serve('./apps/bookstore', '/bookstore'));
+    .use(serve('./apps', '/'));
 
 
 app.listen(80);
