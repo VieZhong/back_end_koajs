@@ -9,6 +9,7 @@ const app = new Koa();
 
 const userRouter = require('./userRouter.js');
 const bookstoreRouter = require('./bookstoreRouter.js');
+const chatRouter = require('./chatRouter.js')
 
 app.keys = ['koajs'];
 
@@ -41,7 +42,8 @@ app
     }))
     .use(userRouter)
     .use(bookstoreRouter)
+    .use(chatRouter)
     .use(serve('./apps', '/'));
 
 
-app.listen(80);
+app.listen(8081);
