@@ -29,9 +29,9 @@ for (let i = 0; i < 30; i++) {
 const router = createRouter({
     GET: {
         '/api/chat/:id/dialogs': (ctx, next) => {
-            // if (!ctx.session.authed) {
-            //     return;
-            // }
+            if (!ctx.session.authed) {
+                return;
+            }
             const id = ctx.params.id;
             if(dialogs_total[id]) {
                 ctx.status = 200;
