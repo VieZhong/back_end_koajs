@@ -45,12 +45,12 @@ const router = createRouter({
     POST: {
         '/api/chat/login': (ctx, next) => {
             const user = ctx.request.body;
-            if(user.account == 'xiaofu' && user.password == '584662') {
+            if(user.account == 'xiaofu' && user.password == '123456') {
                 ctx.session.authed = true;
                 ctx.status = 200;
                 ctx.body = {'id': user.account, 'name': '小夫'};
                 ctx.cookies.set('login', 1, {'httpOnly': false});
-            } else if(user.account == 'vie' && user.password == '584662') {
+            } else if(user.account == 'vie' && user.password == '123456') {
                 ctx.session.authed = true;
                 ctx.status = 200;
                 ctx.body = {'id': user.account, 'name': '旧日憾事'};
