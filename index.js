@@ -74,7 +74,7 @@ wss.on('connection', ws => {
         if(type == 'message') {  
             //发信者对话
             const senderBox = [];
-            dialogs_total[by].forEach(({id: i, name, data}) => {
+            dialogs_total[by] && dialogs_total[by].forEach(({id: i, name, data}) => {
                 if(i == id) {
                     data.push([word, 0, time]);
                     senderBox.unshift({id, name, data});
@@ -86,7 +86,7 @@ wss.on('connection', ws => {
 
             //收信者对话
             const receiverBox = [];
-            dialogs_total[id].forEach(({id: i, name, data}) => {
+            dialogs_total[id] && dialogs_total[id].forEach(({id: i, name, data}) => {
                 if(i == by) {
                     data.push([word, 1, time]);
                     receiverBox.unshift({id: by, name, data});
