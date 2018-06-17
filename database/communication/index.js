@@ -11,8 +11,8 @@ const dialogs_total = {
         id: 'xiaofu',
         name: '小夫',
         data: [
-            ['你好，我是小夫，很高兴认识你！', 1, new Date().valueOf() - 7200000],
-            ['你好，我是旧日憾事。有事找我吗？', 0, new Date().valueOf() - 7200000 * 3]
+            ['你好，我是旧日憾事，很高兴认识你！', 0, new Date().valueOf() - 7200000],
+            ['你好，我是小夫。有事找我吗？', 1, new Date().valueOf() - 7200000 * 3]
         ]
     }]
 };
