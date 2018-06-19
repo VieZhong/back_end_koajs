@@ -1,6 +1,7 @@
-// const WebSocket = require('ws');
-const dialogs_total = require('./database/communication');
+const WebSocket = require('ws');
 const createRouter = require('koa-bestest-router');
+
+const dialogs_total = require('./database/communication');
 
 const router = createRouter({
     GET: {
@@ -20,16 +21,16 @@ const router = createRouter({
     },
     POST: {
         '/api/chat/login': (ctx, next) => {
-            const user = ctx.request.body;
-            if(user.account == 'xiaofu' && user.password == '123456') {
+            const { account, password } = ctx.request.body;
+            if(account == 'xiaofu' && password == '123456') {
                 ctx.session.authed = true;
                 ctx.status = 200;
-                ctx.body = {'id': user.account, 'name': '小夫'};
+                ctx.body = {'id': account, 'name': '小夫'};
                 ctx.cookies.set('login', 1, {'httpOnly': false});
-            } else if(user.account == 'vie' && user.password == '123456') {
+            } else if(account == 'vie' && password == '123456') {
                 ctx.session.authed = true;
                 ctx.status = 200;
-                ctx.body = {'id': user.account, 'name': '旧日憾事'};
+                ctx.body = {'id': account, 'name': '旧日憾事'};
                 ctx.cookies.set('login', 1, {'httpOnly': false});
             } else {
                 ctx.status = 400;
@@ -49,4 +50,69 @@ const router = createRouter({
     }
 });
 
-module.exports = router;
+const wss = new WebSocket.Server({ noServer: true });
+
+wss.on('connection', ws => {
+    ws.isAlive = true;
+    ws.on('pong', () => {
+        ws.isAlive = true;
+    });
+    ws.on('message', message => {
+        const { id, word, time, by, type } = JSON.parse(message);
+
+        if(type == 'connection') {
+            ws['userId'] = by;
+            return;
+        }
+
+        if(type == 'message') {  
+            //发信者对话
+            const senderBox = [];
+            dialogs_total[by] && dialogs_total[by].forEach(({id: i, name, data}) => {
+                if(i == id) {
+                    data.push([word, 0, time]);
+                    senderBox.unshift({id, name, data});
+                } else {
+                    senderBox.push({id: i, name, data});  
+                }
+            });
+            dialogs_total[by] = senderBox;
+
+            //收信者对话
+            const receiverBox = [];
+            dialogs_total[id] && dialogs_total[id].forEach(({id: i, name, data}) => {
+                if(i == by) {
+                    data.push([word, 1, time]);
+                    receiverBox.unshift({id: by, name, data});
+                } else {
+                    receiverBox.push({id: i, name, data});  
+                }
+            });
+            dialogs_total[id] = receiverBox;
+
+            wss.clients.forEach(w => {
+                if (w.userId == id){
+                    try {
+                        w.send(message);
+                    } catch(e){
+                        console.log("ws send error!");
+                    }
+                }
+            });
+            return;
+        }
+
+    });
+});
+
+setInterval(() => {
+    wss.clients.forEach(ws => {
+        if (!ws.isAlive){
+            return ws.terminate();
+        }
+        ws.isAlive = false;
+        ws.ping(() => {});
+    });
+}, 60000);
+
+module.exports = { router, webSocketServer: wss };
