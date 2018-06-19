@@ -65,3 +65,15 @@ server.on('upgrade', (request, socket, head) => {
 })
 
 server.listen(80);
+
+
+process.on('SIGINT', () => {
+    console.info('SIGINT signal received.')
+
+    server.close(err => {
+        if (err) {
+            console.error(err)
+            process.exit(1)
+        }
+    });
+})
