@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>抽奖</title>
+    <style>
+        body {
+            background-color: #efe;
+        }
+        .names-container {
+            margin: 100px auto;
+            width: 300px;
+            height: 300px;
+            border: 1px solid red;
+            font-size: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e33;
+            color: yellow;
+            letter-spacing: 8px;
+        }
+        .draw-button-container {
+            text-align: center;
+        }
+        .draw-button {
+            cursor: pointer;
+            width: 120px;
+            height: 32px;
+            line-height: 30px;
+            border: none;
+            border-radius: 14px;
+            background-color: orange;
+            color: white;
+            font-size: 16px;
+            letter-spacing: 1px;
+            outline: none
+        }
+    </style>
+</head>
+<body>
+    <div class="names-container" id="names-container">？</div>
+    <div class="draw-button-container">
+        <button class="draw-button" id="draw-button">点击抽奖</button>
+    </div>
+
+    <script src="drawlots.js"></script>
+</body>
+</html>
