@@ -1,6 +1,6 @@
 const fs = require('fs');
 const url = require('url');
-const http = require('http');
+const https = require('https');
 const Koa = require('koa');
 const logger = require('koa-logger');
 const session = require('koa-session');
@@ -35,7 +35,7 @@ app
             return;
         } else if (ctx.path === '/blog') {
             ctx.status = 301;
-            ctx.redirect('http://viezhong.github.io/blog');
+            ctx.redirect('https://viezhong.github.io/blog');
             return;
         }
         return next();
@@ -56,7 +56,11 @@ app
     .use(serve('./apps', '/'));
 
 
-const server = http.createServer(app.callback());
+const server = https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/www.viezhong.top/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.viezhong.top/fullchain.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/www.viezhong.top/chain.pem'),
+}, app.callback());
 
 server.on('upgrade', (request, socket, head) => {
     if (url.parse(request.url).pathname === '/api/communication/chat') {
@@ -68,7 +72,7 @@ server.on('upgrade', (request, socket, head) => {
     }
 })
 
-server.listen(80);
+server.listen(443);
 
 
 process.on('SIGINT', () => {
