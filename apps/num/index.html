@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html style="font-size: 16px">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>数字生成器</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            p {
+                font-size: 0.4rem;
+                background-color: yellow;
+                color: red;
+                text-align: center;
+            }
+            .item {
+                display: flex;
+                align-items: center;
+                margin-top: 0.4rem;
+                padding: 0 0.3rem;
+            }
+            .item span {
+                margin: 0 0.4rem 0 0.1rem;
+                font-size: 0.3rem;
+            }
+            .item input[type="radio"] {
+                font-size: 0.6rem;
+            }
+            .item label {
+                font-size: 0.4rem;
+                line-height: 1rem;
+            }
+            .item input[type="text"] {
+                font-size: 0.3rem;
+                line-height: 0.6rem;
+                flex: 1;
+                border: 1px solid #aaa;
+                padding: 0 0.2rem;
+                border-radius: 0.1rem;
+                outline: none;
+            }
+            #result {
+                box-sizing: border-box;
+                width: 100%;
+                font-size: 0.3rem;
+                padding: 0.4rem;
+                margin-top: 0.4rem;
+                border-top: 1px solid #aaa;
+                word-break: break-word;
+                line-height: 0.4rem;
+            }
+        </style>
+        <script>
+            (function() {
+                var innerWidth = window.innerWidth;
+                document.documentElement.style.fontSize = Math.min((innerWidth / 750) * 100, 80) + 'px'; 
+            })();
+        </script>
+    </head>
+    <body>
+        <p>仅限个人使用，请勿外传！</p>
+        <div class="item">
+            <label for="method">组合方式：</label>
+            <input type="radio" name="method" value="1" checked onchange="submit()" /><span>自选</span><input type="radio" name="method" value="2" onchange="submit()" /><span>组选</span>
+        </div>
+        <div class="item">
+            <label for="first">1号位：</label>
+            <input name="first" type="text" placeholder="数字请用 / 隔开" oninput="submit()" />
+        </div>
+        <div class="item">
+            <label for="second">2号位：</label>
+            <input name="second" type="text" placeholder="数字请用 / 隔开" oninput="submit()" />
+        </div>
+        <div class="item">
+            <label for="third">3号位：</label>
+            <input name="third" type="text" placeholder="数字请用 / 隔开" oninput="submit()" />
+        </div>
+        <div id="result"></div>
+    </body>
+    <script>
+        function submit() {
+            const method = document.getElementsByName('method')[0].checked ? 1 : 2 ;
+            const first = document.getElementsByName('first')[0].value;
+            const second = document.getElementsByName('second')[0].value;
+            const third = document.getElementsByName('third')[0].value;
+            const [list1, list2, list3] = [first.split('/'), second.split('/'), third.split('/')];
+            const result = new Set();
+            if (method === 1) {
+                list1.forEach(x => {
+                    list2.forEach(y => {
+                        list3.forEach(z => {
+                            if (x.trim() && y.trim() && z.trim()) {
+                                result.add(`${x.trim()}${y.trim()}${z.trim()}`);
+                            }
+                        });
+                    });
+                });
+            } else {
+                [[list1, list2, list3], [list1, list3, list2], [list2, list3, list1], [list2, list1, list3], [list3, list1, list2], [list3, list2, list1]].forEach(([a, b, c]) => {
+                    a.forEach(x => {
+                        b.forEach(y => {
+                            c.forEach(z => {
+                                if (x.trim() && y.trim() && z.trim()) {
+                                    result.add(`${x.trim()}${y.trim()}${z.trim()}`);
+                                }
+                            });
+                        });
+                    });
+                })
+            }
+            const list = [...result];
+            document.getElementById("result").innerHTML = list.length ? `共 ${list.length} 组：<br />${list.join(',')}` : '';
+        }
+    </script>
+</html>

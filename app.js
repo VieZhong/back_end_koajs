@@ -29,6 +29,10 @@ app
             ctx.status = 301;
             ctx.redirect('/drawlots/index.html');
             return;
+        } else if (ctx.path === '/num') {
+            ctx.status = 301;
+            ctx.redirect('/num/index.html');
+            return;
         } else if (['/communication', '/communication/login', '/communication/chat', '/communication/box','/communication/contact'].includes(ctx.path)) {
             ctx.set('Content-Type', 'text/html');
             ctx.body = fs.readFileSync('apps/communication/index.html');
