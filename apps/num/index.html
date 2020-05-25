@@ -86,6 +86,12 @@
             const second = document.getElementsByName('second')[0].value;
             const third = document.getElementsByName('third')[0].value;
             const [list1, list2, list3] = [first.split('/'), second.split('/'), third.split('/')];
+            const left1 = list1.length === 1 ? list1: list1.slice(0, list1.length % 2 ? (list1.length - 1) / 2 : list1.length / 2);
+            const left2 = list2.length === 1 ? list2 : list2.slice(0, list2.length % 2 ? (list2.length - 1) / 2 : list2.length / 2);
+            const left3 = list3.length === 1 ? list3 : list3.slice(0, list3.length % 2 ? (list3.length - 1) / 2 : list3.length / 2);
+            const right1 = list1.length === 1 ? list1 : list1.slice(list1.length % 2 ? (list1.length - 1) / 2 : list1.length / 2);
+            const right2 = list2.length === 1 ? list2 : list2.slice(list2.length % 2 ? (list2.length - 1) / 2 : list2.length / 2);
+            const right3 = list3.length === 1 ? list3 : list3.slice(list3.length % 2 ? (list3.length - 1) / 2 : list3.length / 2);
             const result = new Set();
             if (method === 1) {
                 list1.forEach(x => {
@@ -97,6 +103,25 @@
                         });
                     });
                 });
+                left1.forEach(x => {
+                    left2.forEach(y => {
+                        left3.forEach(z => {
+                            if (x.trim() && y.trim() && z.trim()) {
+                                result.delete(`${x.trim()}${y.trim()}${z.trim()}`);
+                            }
+                        });
+                    });
+                });
+                right1.forEach(x => {
+                    right2.forEach(y => {
+                        right3.forEach(z => {
+                            if (x.trim() && y.trim() && z.trim()) {
+                                result.delete(`${x.trim()}${y.trim()}${z.trim()}`);
+                            }
+                        });
+                    });
+                });
+
             } else {
                 [[list1, list2, list3], [list1, list3, list2], [list2, list3, list1], [list2, list1, list3], [list3, list1, list2], [list3, list2, list1]].forEach(([a, b, c]) => {
                     a.forEach(x => {
@@ -108,7 +133,29 @@
                             });
                         });
                     });
-                })
+                });
+                [[left1, left2, left3], [left1, left3, left2], [left2, left3, left1], [left2, left1, left3], [left3, left1, left2], [left3, left2, left1]].forEach(([a, b, c]) => {
+                    a.forEach(x => {
+                        b.forEach(y => {
+                            c.forEach(z => {
+                                if (x.trim() && y.trim() && z.trim()) {
+                                    result.delete(`${x.trim()}${y.trim()}${z.trim()}`);
+                                }
+                            });
+                        });
+                    });
+                });
+                [[right1, right2, right3], [right1, right3, right2], [right2, right3, right1], [right2, right1, right3], [right3, right1, right2], [right3, right2, right1]].forEach(([a, b, c]) => {
+                    a.forEach(x => {
+                        b.forEach(y => {
+                            c.forEach(z => {
+                                if (x.trim() && y.trim() && z.trim()) {
+                                    result.delete(`${x.trim()}${y.trim()}${z.trim()}`);
+                                }
+                            });
+                        });
+                    });
+                });
             }
             const list = [...result];
             document.getElementById("result").innerHTML = list.length ? `共 ${list.length} 组：<br />${list.join(',')}` : '';
